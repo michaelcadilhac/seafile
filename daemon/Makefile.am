@@ -2,6 +2,7 @@
 AM_CFLAGS = -DPKGDATADIR=\"$(pkgdatadir)\" \
 	-DPACKAGE_DATA_DIR=\""$(pkgdatadir)"\" \
 	-DSEAFILE_CLIENT \
+	-D__USE_MINGW_ANSI_STDIO=1 \
 	-I$(top_srcdir)/include \
 	-I$(top_srcdir)/lib \
 	-I$(top_builddir)/lib \
@@ -31,7 +32,8 @@ noinst_HEADERS = \
 	sync-status-tree.h \
 	filelock-mgr.h \
 	set-perm.h \
-	change-set.h
+	change-set.h \
+	seafile-error-impl.h
 
 if LINUX
 wt_monitor_src = wt-monitor.c wt-monitor-linux.c wt-monitor-structs.c
@@ -53,6 +55,7 @@ common_src = \
 	../common/seafile-crypt.c ../common/diff-simple.c $(wt_monitor_src) \
 	clone-mgr.c \
 	seafile-config.c \
+	seafile-error.c \
 	../common/branch-mgr.c ../common/fs-mgr.c \
 	repo-mgr.c ../common/commit-mgr.c \
 	../common/log.c \
@@ -75,7 +78,7 @@ seaf_daemon_SOURCES = seaf-daemon.c $(common_src)
 
 seaf_daemon_LDADD = $(top_builddir)/lib/libseafile_common.la \
 	@GLIB2_LIBS@  @GOBJECT_LIBS@ @SSL_LIBS@ @GNUTLS_LIBS@ @NETTLE_LIBS@ \
-	@LIB_RT@ @LIB_UUID@ -lsqlite3 @LIBEVENT_LIBS@ \
+	@LIB_RT@ @LIB_UUID@ -lsqlite3 @LIBEVENT_LIBS@ @LIBEVENT_PTHREADS_LIBS@\
 	$(top_builddir)/common/cdc/libcdc.la \
 	$(top_builddir)/common/index/libindex.la @LIB_WS32@ @LIB_CRYPT32@ \
 	@SEARPC_LIBS@ @JANSSON_LIBS@ @LIB_MAC@ @ZLIB_LIBS@ @CURL_LIBS@ @BPWRAPPER_LIBS@

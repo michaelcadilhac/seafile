@@ -53,6 +53,7 @@ struct _SeafileSession {
     char                *deleted_store;
     char                *rpc_socket_path;
 
+    uint32_t            cdc_average_block_size;
     SeafBlockManager    *block_mgr;
     SeafFSManager       *fs_mgr;
     SeafCommitManager   *commit_mgr;
@@ -76,6 +77,8 @@ struct _SeafileSession {
     gboolean             sync_extra_temp_file;
     gboolean             enable_http_sync;
     gboolean             disable_verify_certificate;
+
+    gboolean             disable_block_hash;
 
     gboolean             use_http_proxy;
     char                *http_proxy_type;

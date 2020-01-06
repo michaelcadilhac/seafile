@@ -34,6 +34,7 @@ import subprocess
 import optparse
 import atexit
 import csv
+import time
 
 error_exit = False
 ####################
@@ -42,6 +43,9 @@ error_exit = False
 
 # command line configuartion
 conf = {}
+
+# The retry times when sign programs
+RETRY_COUNT = 3
 
 # key names in the conf dictionary.
 CONF_VERSION            = 'version'
@@ -838,9 +842,17 @@ def do_sign(certfile, fn, desc=None):
     else:
         desc_flags = ''
 
+    # https://support.comodo.com/index.php?/Knowledgebase/Article/View/68/0/time-stamping-server
     signcmd = 'signtool.exe sign -fd sha256 -t http://timestamp.comodoca.com -f {} {} {}'.format(certfile, desc_flags, fn)
-    if run(signcmd, cwd=os.path.dirname(fn)) != 0:
-        error('Failed to sign file "{}"'.format(fn))
+    i = 0
+    while i < RETRY_COUNT:
+        time.sleep(30)
+        ret = run(signcmd, cwd=os.path.dirname(fn))
+        if ret == 0:
+            break
+        i = i + 1
+        if i == RETRY_COUNT:
+            error('Failed to sign file "{}"'.format(fn))
 
 def strip_symbols():
     bin_dir = os.path.join(conf[CONF_BUILDDIR], 'pack', 'bin')

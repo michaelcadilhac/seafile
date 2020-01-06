@@ -13,11 +13,11 @@ class SeafileRpcClient(NamedPipeClient):
              **kwargs
          )
 
-    @searpc_func("object", [])
-    def seafile_get_session_info():
+    @searpc_func("string", ["int"])
+    def seafile_sync_error_id_to_str():
         pass
-    get_session_info = seafile_get_session_info
-
+    sync_error_id_to_str = seafile_sync_error_id_to_str
+         
     @searpc_func("int", ["string"])
     def seafile_calc_dir_size(path):
         pass
@@ -109,13 +109,13 @@ class SeafileRpcClient(NamedPipeClient):
     def gen_default_worktree(worktree_parent, repo_name):
         pass
 
-    @searpc_func("string", ["string", "int", "string", "string", "string", "string", "string", "string", "string", "string", "string", "int", "string"])
-    def seafile_clone(repo_id, repo_version, peer_id, repo_name, worktree, token, password, magic, peer_addr, peer_port, email, random_key, enc_version, more_info):
+    @searpc_func("string", ["string", "int", "string", "string", "string", "string", "string", "string", "int", "string"])
+    def seafile_clone(repo_id, repo_version, repo_name, worktree, token, password, magic, email, random_key, enc_version, more_info):
         pass
     clone = seafile_clone
 
-    @searpc_func("string", ["string", "int", "string", "string", "string", "string", "string", "string", "string", "string", "string", "int", "string"])
-    def seafile_download(repo_id, repo_version, peer_id, repo_name, wt_parent, token, password, magic, peer_addr, peer_port, email, random_key, enc_version, more_info):
+    @searpc_func("string", ["string", "int", "string", "string", "string", "string", "string", "string", "int", "string"])
+    def seafile_download(repo_id, repo_version, repo_name, wt_parent, token, password, magic, email, random_key, enc_version, more_info):
         pass
     download = seafile_download
 
@@ -123,11 +123,6 @@ class SeafileRpcClient(NamedPipeClient):
     def seafile_cancel_clone_task(repo_id):
         pass
     cancel_clone_task = seafile_cancel_clone_task
-
-    @searpc_func("int", ["string"])
-    def seafile_remove_clone_task(repo_id):
-        pass
-    remove_clone_task = seafile_remove_clone_task
 
     @searpc_func("objlist", [])
     def seafile_get_clone_tasks():
@@ -138,11 +133,6 @@ class SeafileRpcClient(NamedPipeClient):
     def seafile_find_transfer_task(repo_id):
         pass
     find_transfer_task = seafile_find_transfer_task
-
-    @searpc_func("object", ["string"])
-    def seafile_get_checkout_task(repo_id):
-        pass
-    get_checkout_task = seafile_get_checkout_task
 
     ### sync
     @searpc_func("int", ["string", "string"])
@@ -155,15 +145,15 @@ class SeafileRpcClient(NamedPipeClient):
         pass
     get_repo_sync_task = seafile_get_repo_sync_task
 
-    @searpc_func("object", ["string"])
-    def seafile_get_repo_sync_info():
-        pass
-    get_repo_sync_info = seafile_get_repo_sync_info
-
     @searpc_func("int", [])
     def seafile_is_auto_sync_enabled():
         pass
     is_auto_sync_enabled = seafile_is_auto_sync_enabled
+
+    @searpc_func("objlist", ["int", "int"])
+    def seafile_get_file_sync_errors():
+        pass
+    get_file_sync_errors = seafile_get_file_sync_errors
 
     ###### Property Management #########
 

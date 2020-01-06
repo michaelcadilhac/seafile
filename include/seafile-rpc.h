@@ -6,14 +6,6 @@
 #include "seafile-object.h"
 
 /**
- * seafile_get_session_info:
- *
- * Returns: a SeafileSessionInfo object.
- */
-GObject *
-seafile_get_session_info (GError **error);
-
-/**
  * seafile_get_repo_list:
  *
  * Returns repository list.
@@ -29,15 +21,6 @@ GObject* seafile_get_repo (const gchar* id, GError **error);
 
 GObject *
 seafile_get_repo_sync_task (const char *repo_id, GError **error);
-
-/**
- * seafile_get_repo_sync_info:
- */
-GObject *
-seafile_get_repo_sync_info (const char *repo_id, GError **error);
-
-GList*
-seafile_get_repo_sinfo (const char *repo_id, GError **error);
 
 /* [seafile_get_config] returns the value of the config entry whose name is
  * [key] in config.db
@@ -67,10 +50,10 @@ seafile_set_download_rate_limit (int limit, GError **error);
 int seafile_destroy_repo (const gchar *repo_id, GError **error);
 
 int
-seafile_unsync_repos_by_account (const char *server_addr, const char *email, GError **error);
+seafile_unsync_repos_by_account (const char *server_url, const char *email, GError **error);
 
 int
-seafile_remove_repo_tokens_by_account (const char *server_addr, const char *email, GError **error);
+seafile_remove_repo_tokens_by_account (const char *server_url, const char *email, GError **error);
 
 int
 seafile_set_repo_token (const char *repo_id, const char *token, GError **error);
@@ -80,9 +63,6 @@ seafile_get_download_rate(GError **error);
 
 int
 seafile_get_upload_rate(GError **error);
-
-int
-seafile_repo_last_modify(const char *repo_id, GError **error);
 
 int
 seafile_set_repo_property (const char *repo_id,
@@ -96,8 +76,7 @@ seafile_get_repo_property (const char *repo_id,
                            GError **error);
 
 int
-seafile_update_repos_server_host (const char *old_host,
-                                  const char *new_host,
+seafile_update_repos_server_host (const char *old_server_url,
                                   const char *new_server_url,
                                   GError **error);
 
@@ -146,14 +125,11 @@ seafile_check_path_for_clone(const char *path, GError **error);
 char *
 seafile_clone (const char *repo_id, 
                int repo_version,
-               const char *peer_id,
                const char *repo_name,
                const char *worktree,
                const char *token,
                const char *passwd,
                const char *magic,
-               const char *peer_addr,
-               const char *peer_port,
                const char *email,
                const char *random_key,
                int enc_version,
@@ -163,14 +139,11 @@ seafile_clone (const char *repo_id,
 char *
 seafile_download (const char *repo_id, 
                   int repo_version,
-                  const char *peer_id,
                   const char *repo_name,
                   const char *wt_parent,
                   const char *token,
                   const char *passwd,
                   const char *magic,
-                  const char *peer_addr,
-                  const char *peer_port,
                   const char *email,
                   const char *random_key,
                   int enc_version,
@@ -179,9 +152,6 @@ seafile_download (const char *repo_id,
 
 int
 seafile_cancel_clone_task (const char *repo_id, GError **error);
-
-int
-seafile_remove_clone_task (const char *repo_id, GError **error);
 
 /**
  * seafile_get_clone_tasks:
@@ -240,4 +210,7 @@ json_t * seafile_get_sync_notification (GError **error);
 
 int
 seafile_shutdown (GError **error);
+
+char*
+seafile_sync_error_id_to_str (int error_id, GError **error);
 #endif

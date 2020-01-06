@@ -2,7 +2,7 @@ dnl Process this file with autoconf to produce a configure script.
 
 
 AC_PREREQ(2.61)
-AC_INIT([seafile], [7.0.0], [info@seafile.com])
+AC_INIT([seafile], [7.0.4], [info@seafile.com])
 AC_CONFIG_HEADER([config.h])
 
 AC_CONFIG_MACRO_DIR([m4])
@@ -152,6 +152,7 @@ AC_SUBST(LIB_ICONV)
 
 
 LIBEVENT_REQUIRED=2.0
+LIBEVENT_PTHREADS_REQUIRED=2.0
 GLIB_REQUIRED=2.16.0
 SEARPC_REQUIRED=1.0
 JANSSON_REQUIRED=2.2.1
@@ -186,6 +187,13 @@ AC_SUBST(ZLIB_LIBS)
 PKG_CHECK_MODULES(CURL, [libcurl >= $CURL_REQUIRED])
 AC_SUBST(CURL_CFLAGS)
 AC_SUBST(CURL_LIBS)
+
+if test "$bwin32" != true; then
+# do not check libevent_pthreads in win32
+PKG_CHECK_MODULES(LIBEVENT_PTHREADS, [libevent_pthreads >= $LIBEVENT_PTHREADS_REQUIRED])
+AC_SUBST(LIBEVENT_PTHREADS_CFLAGS)
+AC_SUBST(LIBEVENT_PTHREADS_LIBS)
+fi
 
 AM_PATH_PYTHON([2.6])
 
